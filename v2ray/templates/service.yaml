@@ -1,0 +1,17 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "v2ray.fullname" . }}
+  labels:
+{{ include "v2ray.labels" . | indent 4 }}
+spec:
+  type: {{ .Values.service.type }}
+  ports:
+    - port: {{ .Values.service.port }}
+      targetPort: 1080
+      nodePort: 30001
+      protocol: TCP
+      name: v2ray
+  selector:
+    app.kubernetes.io/name: {{ include "v2ray.name" . }}
+    app.kubernetes.io/instance: {{ .Release.Name }}
